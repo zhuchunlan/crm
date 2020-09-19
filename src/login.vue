@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import {http,login} from './api/api'
+
 export default {
     data(){
         return {
@@ -28,7 +30,26 @@ export default {
     },
     methods:{
         onSubmit(){
-            alert('suibian')
+            if(this.login.user == ''){
+                this.$message.error('请输入账号')
+            }else if(this.login.pass == ''){
+                this.$message.error('请输入密码')
+            }else{
+                this.$http.post(http+login,{
+                    username:this.login.user,
+                    password:this.login.pass
+                },{emulateJSON:true}).then((data)=>{
+                    console.log(data)
+                    if(data.data.msg == '用户名或密码错误'){
+                        this.$message.error('用户名或密码错误')
+                    }else if(data.data.msg == '成功'){
+                        localStorage.token=data.data.data.token
+                        location.href = './'
+                    }
+                },(err)=>{
+                    this.$message.error('登录失败')
+                })
+            }
         }
     }
 }
