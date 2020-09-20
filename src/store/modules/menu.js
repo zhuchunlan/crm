@@ -5,7 +5,6 @@ export default{
     mutations:{
         setmenu(state,data){
             state.menu=data
-            console.log(data)
         }
     }
 }
